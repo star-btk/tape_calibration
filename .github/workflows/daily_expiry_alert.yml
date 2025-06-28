@@ -1,0 +1,32 @@
+name: Daily Expiry Alert
+
+on:
+  schedule:
+    - cron: "30 0 * * *"  # Run daily at 6:00 AM SLT (UTC+5:30)
+  workflow_dispatch:
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install --upgrade pip gspread oauth2client
+
+      - name: Decode Google API credentials
+        run: echo "${{ secrets.API_CRED }}" | base64 -d > creds.json
+
+      - name: Run expiry alert script
+        env:
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        run: python automail.py
