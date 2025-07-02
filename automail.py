@@ -20,7 +20,7 @@ data = sheet.get_all_values()
 # Build message for expiring entries
 message = ''
 for idx, row in enumerate(data[1:], start=2):
-    if row[9] == 'FALSE':
+    if row[9] == 'FALSE' and row[6] != '':
         try:
             target_date = datetime.strptime(row[5], "%Y-%m-%d").date()
             days_remaining = (target_date - date.today()).days
