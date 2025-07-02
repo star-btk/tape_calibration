@@ -30,7 +30,7 @@ for idx, row in enumerate(data[1:], start=2):
             print(f"Error in row {idx}: {e}")
 
 # Send email if needed
-if message:
+if message != '':
     full_message = f"""This is an automated alert for tape calibrations nearing expiration:\n\n{message}"""
     msg = MIMEText(full_message)
     msg['Subject'] = '⚠️ Tape Calibration Expiry Alert'
